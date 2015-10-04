@@ -1,11 +1,10 @@
 package dk.cngroup.calculator.parser;
 
-import java.io.File;
-import java.io.IOException;
+import dk.cngroup.calculator.datasource.IDataSource;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Parser for input in file
@@ -15,25 +14,19 @@ public class FileParser implements IParser {
     /**
      * Parses input file and return list of parsed items(lines)
      *
-     * @param inputFilePath path to input file
-     * @return list of orders / null
+     * @param input input data
+     * @return list of orders
      */
-    public List<Order> parse(String inputFilePath) {
-        List<Order> outputList = null;
+    public List<Order> parse(String input) {
 
-        File file = new File(getClass().getResource(inputFilePath).getFile());
-        try {
-            Scanner scanner = new Scanner(file);
-            outputList = new ArrayList<Order>();
+        String[] lines = input.split(IDataSource.LINE_SEPARATOR);
 
-            while (scanner.hasNextLine()) {
-                String[] arr = scanner.nextLine().split(" ");
-                outputList.add(new Order(arr[0], new BigDecimal(arr[1])));
+        List<Order> outputList = new ArrayList<Order>();
+        for (int i=0; i < lines.length; i++) {
+            String[] orderLine = lines[i].split(" ");
+            if (orderLine.length == 2) {
+                outputList.add(new Order(orderLine[0], new BigDecimal(orderLine[1])));
             }
-            scanner.close();
-
-        } catch (IOException e) {
-            System.err.println("ERROR: Can't open file " + inputFilePath);
         }
 
         // last order have to be processed as first -> last order will be moved to first position

@@ -1,5 +1,7 @@
 package dk.cngroup.calculator;
 
+import dk.cngroup.calculator.datasource.FileDataSource;
+import dk.cngroup.calculator.datasource.IDataSource;
 import dk.cngroup.calculator.operations.AddOperation;
 import dk.cngroup.calculator.operations.ApplyOperation;
 import dk.cngroup.calculator.operations.DivideOperation;
@@ -16,6 +18,11 @@ import java.math.BigDecimal;
 public class App {
     public static void main(String[] args) {
 
+        if (args.length != 1) {
+            System.out.println("Usage: First parameter have to be path to file with orders.");
+            return;
+        }
+
         IParser parser = new FileParser();
 
         OperationsRegister register = new OperationsRegister();
@@ -25,9 +32,13 @@ public class App {
         register.register(new MultiplyOperation());
         register.register(new SubtractOperation());
 
-        Calculator calculator = new Calculator(register, parser);
-        BigDecimal result = calculator.calculate(args[0]);
+        IDataSource dataSource = new FileDataSource(args[0]);
 
-        System.out.print(result);
+        Calculator calculator = new Calculator(register, parser, dataSource);
+        BigDecimal result = calculator.calculate();
+
+        if (result != null) {
+            System.out.print(result);
+        }
     }
 }

@@ -3,14 +3,16 @@ package dk.cngroup.calculator.operations;
 import java.math.BigDecimal;
 
 /**
- * Created by okralik on 2. 10. 2015.
+ * Apply operation
  */
 public class ApplyOperation implements IOperation {
 
+    @Override
     public String getOperation() {
         return "apply";
     }
 
+    @Override
     public BigDecimal calculate(BigDecimal currentValue, BigDecimal newValue) {
         return newValue;
     }

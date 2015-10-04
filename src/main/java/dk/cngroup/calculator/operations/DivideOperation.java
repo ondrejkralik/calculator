@@ -3,7 +3,7 @@ package dk.cngroup.calculator.operations;
 import java.math.BigDecimal;
 
 /**
- * Created by okralik on 1. 10. 2015.
+ * Divide operation (/)
  */
 public class DivideOperation implements IOperation {
 

@@ -31,4 +31,22 @@ public class Order {
     public void setNumber(BigDecimal number) {
         this.number = number;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Order order = (Order) o;
+
+        if (!getOrder().equals(order.getOrder())) return false;
+        return getNumber().equals(order.getNumber());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getOrder().hashCode();
+        result = 31 * result + getNumber().hashCode();
+        return result;
+    }
 }
