@@ -2,6 +2,7 @@ package dk.cngroup.calculator;
 
 import dk.cngroup.calculator.datasource.IDataSource;
 import dk.cngroup.calculator.exception.DataSourceNotFoundException;
+import dk.cngroup.calculator.exception.IllegalDataException;
 import dk.cngroup.calculator.operations.IOperation;
 import dk.cngroup.calculator.parser.IParser;
 import dk.cngroup.calculator.parser.Order;
@@ -52,7 +53,12 @@ public class Calculator {
             for (Order order : orders) {
                 IOperation operation = register.findOperation(order.getOrder());
                 if (operation != null) {
-                    currentValue = operation.calculate(currentValue, order.getNumber());
+                    try {
+                        currentValue = operation.calculate(currentValue, order.getNumber());
+                    } catch (IllegalDataException e) {
+                        System.err.println("ERROR: Wrong input data - " + e.getMessage());
+                        return null;
+                    }
                 }
             }
         }
